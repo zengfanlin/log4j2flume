@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+    </Console>
+    <Flume name="FlumeAppender" compress="false" type="Embedded" >
+      <Property name="channel.type">memory</Property>
+      <Property name="channel.capacity">200</Property>
+      <Property name="sinks">agent1</Property>
+      <Property name="agent1.type">avro</Property>
+      <Property name="agent1.hostname">hadoop01</Property>
+      <Property name="agent1.port">22222</Property>
+      <Property name="agent1.batch-size">100</Property>
+      <Property name="processor.type">failover</Property>
+      <PatternLayout charset="UTF-8" pattern="%m%n" />
+    </Flume>
+  </Appenders>
+  <Loggers>
+    <Logger name="sysLog" level="info">
+      <AppenderRef ref="FlumeAppender"/>
+    </Logger>
+    <Root level="info">
+      <AppenderRef ref="Console"/>
+    </Root>
+  </Loggers>
+</Configuration>
